@@ -1,14 +1,20 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-import ROUTES from "../app/routes";
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import ROUTES from '../app/routes';
+import { addQuizThunk } from '../features/quizzes/quizzesSlice';
+
+import { selectTopics } from '../features/topics/topicsSlice';
 
 export default function NewQuizForm() {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [cards, setCards] = useState([]);
-  const [topicId, setTopicId] = useState("");
+  const [topicId, setTopicId] = useState('');
+
   const history = useHistory();
-  const topics = {};
+  const topics = useSelector(selectTopics);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,6 +24,15 @@ export default function NewQuizForm() {
 
     const cardIds = [];
 
+    dispatch(
+      addQuizThunk({
+        id: uuidv4(),
+        name,
+        topicId,
+        cardIds,
+      })
+    );
+
     // create the new cards here and add each card's id to cardIds
     // create the new quiz here
 
@@ -26,7 +41,7 @@ export default function NewQuizForm() {
 
   const addCardInputs = (e) => {
     e.preventDefault();
-    setCards(cards.concat({ front: "", back: "" }));
+    setCards(cards.concat({ front: '', back: '' }));
   };
 
   const removeCard = (e, index) => {
@@ -68,7 +83,7 @@ export default function NewQuizForm() {
               id={`card-front-${index}`}
               value={cards[index].front}
               onChange={(e) =>
-                updateCardState(index, "front", e.currentTarget.value)
+                updateCardState(index, 'front', e.currentTarget.value)
               }
               placeholder="Front"
             />
@@ -77,7 +92,7 @@ export default function NewQuizForm() {
               id={`card-back-${index}`}
               value={cards[index].back}
               onChange={(e) =>
-                updateCardState(index, "back", e.currentTarget.value)
+                updateCardState(index, 'back', e.currentTarget.value)
               }
               placeholder="Back"
             />
