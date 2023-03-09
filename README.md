@@ -1,3 +1,7 @@
+# Codecademy redux challenge project - flashcards
+
+https://www.codecademy.com/projects/practice/react-redux-flashcards
+
 # To Run
 
 Run `npm start` in the project root and the app will be available on port 3000.
